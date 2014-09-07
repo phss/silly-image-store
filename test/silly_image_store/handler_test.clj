@@ -16,6 +16,10 @@
       (is (= (class body) java.io.File))  
       (is (= (.getPath body) "resources/images/zelda.png"))))
 
+  (testing "image not-found"
+    (let [response (app (mock/request :get "/image/not-such-image.png"))]
+      (is (= (:status response) 404))))
+
   (testing "not-found route"
     (let [response (app (mock/request :get "/invalid"))]
       (is (= (:status response) 404)))))
