@@ -5,12 +5,13 @@
             [compojure.handler :as handler]
             [compojure.route :as route]))
 
+(def images-dir
+  (env :base-store-dir))
 
 (defroutes app-routes
   (GET "/" [] "Hello World")
-  (GET "/env" [] (env :base-store-dir))
-  (GET "/image/:id" [id]
-    (io/file (str "resources/images/" id)))
+  (GET "/image/:image-name" [image-name]
+    (io/file (str images-dir image-name)))
   (route/resources "/")
   (route/not-found "Not Found"))
 
