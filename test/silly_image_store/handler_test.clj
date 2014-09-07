@@ -17,6 +17,10 @@
         (is (= (:status response) 404))   
         (is (= (:body response) "No image 'not-such-image.png' found")))))
 
+  (testing "list images as json"
+    (let [response (app (mock/request :get "/images"))]
+      (is (= (:status response) 200))))
+
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]
       (is (= (:status response) 404)))))
