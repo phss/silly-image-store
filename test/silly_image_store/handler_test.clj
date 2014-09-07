@@ -14,7 +14,8 @@
 
     (testing "image not-found"
       (let [response (app (mock/request :get "/image/not-such-image.png"))]
-        (is (= (:status response) 404)))))
+        (is (= (:status response) 404))   
+        (is (= (:body response) "No image 'not-such-image.png' found")))))
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]

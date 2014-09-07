@@ -12,7 +12,7 @@
   (let [image-file (io/file (str images-dir image-name))]
     (if (.exists image-file)
       image-file
-      {:status 404})))
+      (route/not-found (str "No image '" image-name "' found")))))
 
 (defroutes app-routes
   (GET "/image/:image-name" [image-name] (serve-image image-name))
