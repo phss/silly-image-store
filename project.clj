@@ -12,4 +12,5 @@
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring-mock "0.1.5"]]
-         :env {:base-store-dir "resources/images/"}}})
+         :env {:base-store-dir "resources/images/"}}
+   :test {:env {:base-store-dir "test/fixtures/"}}})
