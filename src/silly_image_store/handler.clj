@@ -16,7 +16,6 @@
       {:status 404})))
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
   (GET "/image/:image-name" [image-name]
     (serve-image image-name))
   (route/resources "/")
