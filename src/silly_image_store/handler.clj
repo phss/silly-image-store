@@ -3,8 +3,7 @@
             [environ.core :refer [env]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
-            [compojure.route :as route])
-  (:use [ring.util.response :only (file-response resource-response status)]))
+            [compojure.route :as route]))
 
 (def images-dir
   (env :base-store-dir))
@@ -16,8 +15,7 @@
       {:status 404})))
 
 (defroutes app-routes
-  (GET "/image/:image-name" [image-name]
-    (serve-image image-name))
+  (GET "/image/:image-name" [image-name] (serve-image image-name))
   (route/resources "/")
   (route/not-found "Not Found"))
 
