@@ -1,5 +1,5 @@
  (ns silly-image-store.handler
-  (:require [clojure.java.io :as io]
+  (:require [silly-image-store.store :as store]
             [environ.core :refer [env]]
             [compojure.core :refer :all]
             [compojure.handler :as handler]
@@ -8,15 +8,11 @@
 (def images-dir
   (env :base-store-dir))
 
-(defn load-image [basedir filename]
-  (let [file (io/file (str basedir filename))]
-    (if (.exists file) file nil)))
-
 (defn image-not-found [image-name]
   (route/not-found (str "No image '" image-name "' found")))
 
 (defn serve-image [image-name]
-  (let [image-file (load-image images-dir image-name)]
+  (let [image-file (store/load-image images-dir image-name)]
     (or image-file (image-not-found image-name))))
 
 (defroutes app-routes
