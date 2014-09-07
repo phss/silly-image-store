@@ -2,6 +2,7 @@
   (:require [silly-image-store.store :as store]
             [environ.core :refer [env]]
             [compojure.core :refer :all]
+            [ring.middleware.json :refer :all]
             [compojure.handler :as handler]
             [compojure.route :as route]))
 
@@ -16,10 +17,12 @@
     (or image-file (image-not-found image))))
 
 (defroutes app-routes
+  (GET "/blah" [] {:status 200 :body {:def [123 456 789]}})
   (GET "/image/:image" [image] (serve-image image))
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
-  (handler/site app-routes))
+  (-> (handler/site app-routes)
+      (wrap-json-response)))
 
