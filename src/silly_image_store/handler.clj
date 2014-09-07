@@ -8,15 +8,15 @@
 (def images-dir
   (env :base-store-dir))
 
-(defn image-not-found [image-name]
-  (route/not-found (str "No image '" image-name "' found")))
+(defn image-not-found [image]
+  (route/not-found (str "No image '" image "' found")))
 
-(defn serve-image [image-name]
-  (let [image-file (store/load-image images-dir image-name)]
-    (or image-file (image-not-found image-name))))
+(defn serve-image [image]
+  (let [image-file (store/load-image images-dir image)]
+    (or image-file (image-not-found image))))
 
 (defroutes app-routes
-  (GET "/image/:image-name" [image-name] (serve-image image-name))
+  (GET "/image/:image" [image] (serve-image image))
   (route/resources "/")
   (route/not-found "Not Found"))
 
