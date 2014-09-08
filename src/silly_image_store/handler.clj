@@ -17,7 +17,7 @@
     (or image-file (image-not-found image))))
 
 (defroutes app-routes
-  (GET "/blah" [] {:status 200 :body {:def [123 456 789]}})
+  (GET "/images" [] "nothing")
   (GET "/images/:image" [image] (serve-image image))
   (route/resources "/")
   (route/not-found "Not Found"))
