@@ -11,4 +11,7 @@
 
     (testing "nil for inexistent image"
       (let [file (load-image "somewhere/" "doesnt-exist.png")]
-        (is (nil? file))))))
+        (is (nil? file)))))
+
+  (testing "listing images"
+    (is (= (list-images "test/fixtures/") ["another-test.jpg" "test-all-the-things.jpg"]))))
