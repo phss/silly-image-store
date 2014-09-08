@@ -19,7 +19,8 @@
 
   (testing "list images as json"
     (let [response (app (mock/request :get "/images"))]
-      (is (= (:status response) 200))))
+      (is (= (:status response) 200))  
+      (is (= (:body response) "[\"another-test.jpg\",\"test-all-the-things.jpg\"]"))))
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]

@@ -17,7 +17,7 @@
     (or image-file (image-not-found image))))
 
 (defroutes app-routes
-  (GET "/images" [] "nothing")
+  (GET "/images" [] (store/list-images images-dir))
   (GET "/images/:image" [image] (serve-image image))
   (route/resources "/")
   (route/not-found "Not Found"))
