@@ -2,10 +2,12 @@
   (:require [clojure.test :refer :all]
             [silly-image-store.store :refer :all]))
 
+(def test-basedir "test/fixtures/")
+
 (deftest test-store
   (testing "loading a file"
     (testing "load existing file"
-      (let [file (load-image "test/fixtures/" "test-all-the-things.jpg")]
+      (let [file (load-image test-basedir "test-all-the-things.jpg")]
         (is (= (class file) java.io.File))  
         (is (= (.getPath file) "test/fixtures/test-all-the-things.jpg"))))
 
@@ -14,4 +16,4 @@
         (is (nil? file)))))
 
   (testing "listing images"
-    (is (= (list-images "test/fixtures/") ["another-test.jpg" "test-all-the-things.jpg"]))))
+    (is (= (list-images test-basedir) ["another-test.jpg" "test-all-the-things.jpg"]))))
