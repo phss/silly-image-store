@@ -13,7 +13,9 @@
   (route/not-found (str "No image '" image "' found")))
 
 (defn list-images []
-  (store/list-images images-dir))
+  (let [image-names (store/list-images images-dir)
+        to-json (fn [n] {:name n})]
+    (map to-json image-names)))
 
 (defn serve-image [image]
   (let [image-file (store/load-image images-dir image)]
