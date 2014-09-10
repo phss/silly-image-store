@@ -12,12 +12,15 @@
 (defn image-not-found [image]
   (route/not-found (str "No image '" image "' found")))
 
+(defn list-images []
+  (store/list-images images-dir))
+
 (defn serve-image [image]
   (let [image-file (store/load-image images-dir image)]
     (or image-file (image-not-found image))))
 
 (defroutes app-routes
-  (GET "/images" [] (store/list-images images-dir))
+  (GET "/images" [] (list-images))
   (GET "/images/:image" [image] (serve-image image))
   (route/resources "/")
   (route/not-found "Not Found"))
