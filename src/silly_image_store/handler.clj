@@ -9,14 +9,16 @@
 (def images-dir
   (env :base-store-dir))
 
-(defn image-not-found [image]
+(defn- image-not-found [image]
   (route/not-found (str "No image '" image "' found")))
 
-; TODO refactor links stuff
-(defn- list-images-route [{scheme :scheme, {host "host"} :headers}]
+(defn- base-url [{scheme :scheme, {host "host"} :headers}]
+  (str (name scheme) "://" host))
+
+(defn- list-images-route [request]
   (let [image-names (store/list-images images-dir)
-        base-url (str (name scheme) "://" host "/images/")
-        to-json (fn [n] {:name n :link (str base-url n)})]
+        image-url (str (base-url request) "/images/")
+        to-json (fn [n] {:name n :link (str image-url n)})]
     (map to-json image-names)))
 
 (defn- serve-image-route [{{image :image} :params}]
