@@ -1,7 +1,11 @@
 FROM dockerfile/java:oracle-java8
 
-ADD target/silly-image-store-0.1.0-SNAPSHOT-standalone.jar /opt/app/silly-image-store.jar
+# Build standalone server jar
+ADD . /opt/app
+WORKDIR /opt/app
+RUN ./lein.sh ring uberjar
 
+# Start app
 EXPOSE 3000
-CMD java -Dbase.store.dir=/opt/images/ -jar /opt/app/silly-image-store.jar
+CMD java -Dbase.store.dir=/opt/images/ -jar /opt/app/target/silly-image-store-*-SNAPSHOT-standalone.jar
 
