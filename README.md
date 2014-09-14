@@ -1,14 +1,12 @@
 # silly-image-store
 
-A Clojure library designed to ... well, that part is up to you.
+Image store written in Clojure. It allows:
 
-## Usage
+* Listing images
+* Viewing an image
+* Viewing a random image
+* ???
+* Profit
 
-FIXME
+It is silly!
 
-## License
-
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
