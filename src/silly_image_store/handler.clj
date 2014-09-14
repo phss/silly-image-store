@@ -12,9 +12,10 @@
 (defn image-not-found [image]
   (route/not-found (str "No image '" image "' found")))
 
-(defn list-images []
+(defn list-images [{scheme :scheme, {host "host"} :headers}]
   (let [image-names (store/list-images images-dir)
-        to-json (fn [n] {:name n})]
+        base-url (str (name scheme) "://" host "/images/")
+        to-json (fn [n] {:name n :link (str base-url n)})]
     (map to-json image-names)))
 
 (defn serve-image [image]
@@ -22,7 +23,7 @@
     (or image-file (image-not-found image))))
 
 (defroutes app-routes
-  (GET "/images" [] (list-images))
+  (GET "/images" request list-images)
   (GET "/images/:image" [image] (serve-image image))
   (route/resources "/")
   (route/not-found "Not Found"))
