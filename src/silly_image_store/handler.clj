@@ -12,6 +12,7 @@
 (defn image-not-found [image]
   (route/not-found (str "No image '" image "' found")))
 
+; TODO refactor links stuff
 (defn list-images [{scheme :scheme, {host "host"} :headers}]
   (let [image-names (store/list-images images-dir)
         base-url (str (name scheme) "://" host "/images/")
@@ -24,7 +25,7 @@
 
 (defroutes app-routes
   (GET "/images" request list-images)
-  (GET "/images/:image" [image] (serve-image image))
+  (GET "/images/:image" [image] (serve-image image)) ; TODO handler as list-image
   (route/resources "/")
   (route/not-found "Not Found"))
 
