@@ -1,5 +1,6 @@
 (ns silly-image-store.handler-test
   (:require [clojure.test :refer :all]
+            [clojure.data.json :as json]
             [silly-image-store.handler :refer :all]
             [ring.mock.request :as mock]))
 
@@ -18,10 +19,14 @@
         (is (= (:body response) "No image 'not-such-image.png' found")))))
 
   (testing "list images as json"
-    (let [response (app (mock/request :get "/images"))]
+    (let [response (app (mock/request :get "/images"))
+          json-body (json/read-str (:body response))]
       (is (= (:status response) 200))  
-      ; TODO convert body from json
-      (is (= (:body response) "[{\"name\":\"another-test.jpg\",\"link\":\"http://localhost/images/another-test.jpg\"},{\"name\":\"test-all-the-things.jpg\",\"link\":\"http://localhost/images/test-all-the-things.jpg\"}]"))))
+      (is (= json-body 
+             [{"name" "another-test.jpg",
+               "link" "http://localhost/images/another-test.jpg"}
+              {"name" "test-all-the-things.jpg",
+               "link" "http://localhost/images/test-all-the-things.jpg"}]))))
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]
