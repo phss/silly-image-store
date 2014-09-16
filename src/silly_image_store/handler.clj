@@ -18,7 +18,7 @@
 (defn- list-images-route [request]
   (let [image-names (store/list-images images-dir)
         image-url (str (base-url request) "/images/")
-        to-json (fn [n] {:name n :link (str image-url n)})]
+        to-json (fn [n] {:name n :url (str image-url n)})]
     (map to-json image-names)))
 
 (defn- serve-image-route [{{image :image} :params}]

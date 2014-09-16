@@ -24,9 +24,9 @@
       (is (= (:status response) 200))  
       (is (= json-body 
              [{"name" "another-test.jpg",
-               "link" "http://localhost/images/another-test.jpg"}
+               "url" "http://localhost/images/another-test.jpg"}
               {"name" "test-all-the-things.jpg",
-               "link" "http://localhost/images/test-all-the-things.jpg"}]))))
+               "url" "http://localhost/images/test-all-the-things.jpg"}]))))
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]
