@@ -1,6 +1,7 @@
  (ns silly-image-store.handler
   (:require [silly-image-store.store :as store]
             [environ.core :refer [env]]
+            [clojure.tools.logging :as log]
             [compojure.core :refer :all]
             [ring.middleware.json :refer :all]
             [compojure.handler :as handler]
@@ -19,6 +20,7 @@
   (let [image-names (store/list-images images-dir)
         image-url (str (base-url request) "/images/")
         to-json (fn [n] {:name n :url (str image-url n)})]
+    (log/info "Blah")
     (map to-json image-names)))
 
 (defn- serve-image-route [{{image :image} :params}]
