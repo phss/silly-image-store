@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]))
 
 (defn load-image [& paths]
-  (let [file (io/file (apply str paths))]
+  (let [file (apply io/file paths)]
     (if (.exists file) file nil)))
 
 (defn list-images [basedir]
