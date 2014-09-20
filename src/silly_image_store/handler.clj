@@ -1,7 +1,7 @@
  (ns silly-image-store.handler
   (:require [silly-image-store.store :as store]
+            [silly-image-store.logging :refer :all]
             [environ.core :refer [env]]
-            [clojure.tools.logging :as log]
             [compojure.core :refer :all]
             [ring.middleware.json :refer :all]
             [compojure.handler :as handler]
@@ -31,11 +31,6 @@
   (GET "/images/:image" request serve-image-route)
   (route/resources "/")
   (route/not-found "Not Found"))
-
-(defn wrap-request-logging [handler]
-  (fn [{requester :remote-addr uri :uri action :request-method :as request}]
-    (log/info (str action " " uri " from " requester))
-    (handler request)))
 
 (def app
   (-> (handler/site app-routes)
