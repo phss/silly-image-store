@@ -20,7 +20,6 @@
   (let [image-names (store/list-images images-dir)
         image-url (str (base-url request) "/images/")
         to-json (fn [n] {:name n :url (str image-url n)})]
-    (log/info "Blah")
     (map to-json image-names)))
 
 (defn- serve-image-route [{{image :image} :params}]
@@ -33,7 +32,13 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
+(defn wrap-request-logging [handler]
+  (fn [{requester :remote-addr uri :uri action :request-method :as request}]
+    (log/info (str action " " uri " from " requester))
+    (handler request)))
+
 (def app
   (-> (handler/site app-routes)
-      (wrap-json-response)))
+      (wrap-json-response)
+      (wrap-request-logging)))
 
