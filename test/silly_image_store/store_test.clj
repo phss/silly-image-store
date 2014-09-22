@@ -20,5 +20,9 @@
       (let [file (load-image "somewhere/" "doesnt-exist.png")]
         (is (nil? file)))))
 
+  (testing "random image"
+    (let [file (random-image test-basedir)]
+      (is (= (.getPath file) "test/fixtures/test-all-the-things.jpg"))))
+
   (testing "listing images"
     (is (= (list-images test-basedir) ["another-test.jpg" "test-all-the-things.jpg"]))))
