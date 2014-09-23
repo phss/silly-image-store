@@ -18,6 +18,12 @@
         (is (= (:status response) 404))   
         (is (= (:body response) "No image 'not-such-image.png' found")))))
 
+  (testing "serve random image"
+    (let [response (app (mock/request :get "/random"))
+          body (:body response)]
+      (is (= (:status response) 200))  
+      (is (= (class body) java.io.File))))
+    
   (testing "list images as json"
     (let [response (app (mock/request :get "/images"))
           json-body (json/read-str (:body response))]

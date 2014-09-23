@@ -26,9 +26,14 @@
   (let [image-file (store/load-image images-dir image)]
     (or image-file (image-not-found image))))
 
+(defn- serve-random-image-route [request]
+  (let [image-file (store/random-image images-dir)]
+    (or image-file (image-not-found "random"))))
+
 (defroutes app-routes
   (GET "/images" request list-images-route)
   (GET "/images/:image" request serve-image-route)
+  (GET "/random" request serve-random-image-route)
   (route/resources "/")
   (route/not-found "Not Found"))
 
