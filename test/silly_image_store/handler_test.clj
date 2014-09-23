@@ -24,15 +24,28 @@
       (is (= (:status response) 200))  
       (is (= (class body) java.io.File))))
     
-  (testing "list images as json"
-    (let [response (app (mock/request :get "/images"))
-          json-body (json/read-str (:body response))]
-      (is (= (:status response) 200))  
-      (is (= json-body 
-             [{"name" "another-test.jpg",
-               "url" "http://localhost/images/another-test.jpg"}
-              {"name" "test-all-the-things.jpg",
-               "url" "http://localhost/images/test-all-the-things.jpg"}]))))
+  (testing "listing images"
+    (testing "images from base dir as json"
+      (let [response (app (mock/request :get "/images"))
+            json-body (json/read-str (:body response))]
+        (is (= (:status response) 200))  
+        (is (= json-body 
+               [{"name" "another-test.jpg",
+                 "url" "http://localhost/images/another-test.jpg"}
+                {"name" "test-all-the-things.jpg",
+                 "url" "http://localhost/images/test-all-the-things.jpg"}]))))
+    
+;    (testing "images from bucket as json"
+;      (let [response (app (mock/request :get "/images/things"))
+;            json-body (json/read-str (:body response))]
+;        (is (= (:status response) 200))  
+;        (is (= json-body 
+;               [{"name" "things.jpg",
+;                 "url" "http://localhost/images/things/things.jpg"}
+;                {"name" "all-things.jpg",
+;                 "url" "http://localhost/images/things/all-things.jpg"}]))))
+    
+    )
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]
