@@ -21,8 +21,9 @@
         (is (nil? file)))))
 
   (testing "random image"
-    (let [file (random-image test-basedir)]
-      (is (= (.getPath file) "test/fixtures/test-all-the-things.jpg"))))
+    (let [file-path (.getPath (random-image test-basedir))]
+      (is (some #{file-path} ["test/fixtures/test-all-the-things.jpg"
+                              "test/fixtures/another-test.jpg"]))))
 
   (testing "listing images"
     (is (= (list-images test-basedir) ["another-test.jpg" "test-all-the-things.jpg"]))))
