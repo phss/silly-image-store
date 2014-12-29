@@ -13,6 +13,13 @@
         (is (= (class body) java.io.File))  
         (is (= (.getPath body) "test/fixtures/tubes.jpg"))))
 
+    (testing "serve image from bucket"
+      (let [response (app (mock/request :get "/buckets/some-bucket/images/boxes.jpg"))
+            body (:body response)]
+        (is (= (:status response) 200))  
+        (is (= (class body) java.io.File))  
+        (is (= (.getPath body) "test/fixtures/some-bucket/boxes.jpg"))))
+
     (testing "image not-found"
       (let [response (app (mock/request :get "/images/not-such-image.png"))]
         (is (= (:status response) 404))   
