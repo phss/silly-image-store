@@ -23,7 +23,7 @@
 
 ; Routes
 (defn- not-found [thing]
-  (route/not-found (str "No thing '" thing "' found")) 
+  (route/not-found (str "No thing '" thing "' found")))
 
 (defn- list-images-route [request bucket]
   (let [json-list-response (json-list-response-builder request)
