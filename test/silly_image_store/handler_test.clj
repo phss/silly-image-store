@@ -35,17 +35,16 @@
                 {"name" "test-all-the-things.jpg",
                  "url" "http://localhost/images/test-all-the-things.jpg"}]))))
     
-;    (testing "images from bucket as json"
-;      (let [response (app (mock/request :get "/images/things"))
-;            json-body (json/read-str (:body response))]
-;        (is (= (:status response) 200))  
-;        (is (= json-body 
-;               [{"name" "things.jpg",
-;                 "url" "http://localhost/images/things/things.jpg"}
-;                {"name" "all-things.jpg",
-;                 "url" "http://localhost/images/things/all-things.jpg"}]))))
-    
-    )
+    (testing "images from bucket as json"
+      (let [response (app (mock/request :get "/buckets/some-bucket/images"))
+            json-body (json/read-str (:body response))]
+        (is (= (:status response) 200))  
+        (is (= json-body 
+               [{"name" "all-the-stuff.jpg",
+                 "url" "http://localhost/images/all-the-stuff.jpg"}
+                {"name" "stuff.jpg",
+                 "url" "http://localhost/images/stuff.jpg"}
+                ])))))
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]

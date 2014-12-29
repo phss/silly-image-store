@@ -30,10 +30,18 @@
   (let [image-file (store/random-image images-dir)]
     (or image-file (image-not-found "random"))))
 
+(defn- list-images-from-bucket-route [{{bucket :bucket} :params, :as request}]
+  (let [image-names (store/list-images (str images-dir "/" bucket))
+        image-url (str (base-url request) "/images/")
+        to-json (fn [n] {:name n :url (str image-url n)})]
+    (map to-json image-names)))
+
+
 (defroutes app-routes
   (GET "/images" request list-images-route)
   (GET "/images/:image" request serve-image-route)
   (GET "/random" request serve-random-image-route)
+  (GET "/buckets/:bucket/images" request list-images-from-bucket-route)
   (route/resources "/")
   (route/not-found "Not Found"))
 
