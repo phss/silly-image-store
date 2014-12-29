@@ -13,14 +13,13 @@
 (defn- image-not-found [image]
   (route/not-found (str "No image '" image "' found")))
 
-(defn- base-url [{scheme :scheme, {host "host"} :headers}]
-  (str (name scheme) "://" host))
+(defn- request-url [{scheme :scheme, {host "host"} :headers, uri :uri}]
+  (str (name scheme) "://" host uri))
 
 (defn- list-images-route [request bucket]
-  (println request)
   (let [image-names (store/list-images images-dir bucket)
-        image-url (str (base-url request) (:uri request) "/")
-        to-json (fn [n] {:name n :url (str image-url n)})]
+        image-url (request-url request)
+        to-json (fn [n] {:name n :url (str image-url "/" n)})]
     (map to-json image-names)))
 
 (defn- serve-image-route [{{image :image} :params}]
