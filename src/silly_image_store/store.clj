@@ -7,7 +7,7 @@
 
 (defn load-image [& paths]
   (let [file (apply io/file paths)]
-    (if (exists? file) file nil)))
+    (if (exists? file) file)))
 
 
 (defn list-images [& paths]
@@ -16,8 +16,7 @@
       (->> image-directory
        .listFiles
        (filter file?)
-       (map filename))
-      nil)))
+       (map filename)))))
 
 (defn random-image [basedir]
   (let [random-image-name (rand-nth (list-images basedir))]
