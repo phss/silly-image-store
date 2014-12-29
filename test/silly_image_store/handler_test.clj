@@ -41,9 +41,9 @@
         (is (= (:status response) 200))  
         (is (= json-body 
                [{"name" "all-the-stuff.jpg",
-                 "url" "http://localhost/images/all-the-stuff.jpg"}
+                 "url" "http://localhost/buckets/some-bucket/images/all-the-stuff.jpg"}
                 {"name" "stuff.jpg",
-                 "url" "http://localhost/images/stuff.jpg"}
+                 "url" "http://localhost/buckets/some-bucket/images/stuff.jpg"}
                 ])))))
 
   (testing "generic not-found route"
