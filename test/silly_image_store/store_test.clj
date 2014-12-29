@@ -27,4 +27,5 @@
 
   (testing "listing images"
     (is (= (list-images test-basedir) ["another-test.jpg" "test-all-the-things.jpg"]))
-    (is (= (list-images test-basedir "some-bucket") ["all-the-stuff.jpg" "stuff.jpg"]))))
+    (is (= (list-images test-basedir "some-bucket") ["all-the-stuff.jpg" "stuff.jpg"]))
+    (is (= (list-images "no-such-place") nil))))

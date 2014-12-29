@@ -10,10 +10,13 @@
 
 
 (defn list-images [& paths]
-  (->> (apply load-image paths)
+  (let [image-directory (apply load-image paths)]
+    (if image-directory
+      (->> image-directory
        .listFiles
        (filter file?)
-       (map filename)))
+       (map filename))
+      nil)))
 
 (defn random-image [basedir]
   (let [random-image-name (rand-nth (list-images basedir))]

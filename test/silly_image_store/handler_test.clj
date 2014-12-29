@@ -44,7 +44,13 @@
                  "url" "http://localhost/buckets/some-bucket/images/all-the-stuff.jpg"}
                 {"name" "stuff.jpg",
                  "url" "http://localhost/buckets/some-bucket/images/stuff.jpg"}
-                ])))))
+                ]))))
+    
+    (testing "bucket not found"
+      (let [response (app (mock/request :get "/buckets/no-such-bucket/images"))]
+        (is (= (:status response) 404))   
+        (is (= (:body response) "No bucket 'no-such-bucket' found")))))
+
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]
