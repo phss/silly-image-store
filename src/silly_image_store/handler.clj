@@ -17,9 +17,9 @@
   (str (name scheme) "://" host uri))
 
 (defn- list-images-route [request bucket]
-  (let [image-names (store/list-images images-dir bucket)
-        image-url (request-url request)
-        to-json (fn [n] {:name n :url (str image-url "/" n)})]
+  (let [base-image-url (request-url request)
+        image-names (store/list-images images-dir bucket)
+        to-json (fn [n] {:name n :url (str base-image-url "/" n)})]
     (map to-json image-names)))
 
 (defn- serve-image-route [{{image :image} :params}]
