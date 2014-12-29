@@ -9,8 +9,8 @@
     (if (.exists file) file nil)))
 
 
-(defn list-images [basedir]
-  (->> (load-image basedir)
+(defn list-images [& paths]
+  (->> (apply load-image paths)
        .listFiles
        (filter file?)
        (map filename)))

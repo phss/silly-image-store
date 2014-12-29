@@ -31,7 +31,7 @@
     (or image-file (image-not-found "random"))))
 
 (defn- list-images-from-bucket-route [{{bucket :bucket} :params, :as request}]
-  (let [image-names (store/list-images (str images-dir "/" bucket))
+  (let [image-names (store/list-images images-dir bucket)
         image-url (str (base-url request) "/images/")
         to-json (fn [n] {:name n :url (str image-url n)})]
     (map to-json image-names)))
