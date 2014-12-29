@@ -1,0 +1,5 @@
+All images from flickr, using Creative Common's Attribution License.
+- search.jpg: https://www.flickr.com/photos/arenamontanus/3440683691
+- kindness.jpg: https://www.flickr.com/photos/vblibrary/5456161441 
+- textures.jpg: https://www.flickr.com/photos/benhosking/5261519783
+- some-bucket/cat.jpg: https://www.flickr.com/photos/nromagna/5643588854
