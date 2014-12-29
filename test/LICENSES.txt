@@ -1,0 +1,5 @@
+All images from flickr, using Creative Common's Attribution License.
+- tubes.jpg: https://www.flickr.com/photos/dahlstroms/3945656390
+- rocket.jpg: https://www.flickr.com/photos/jurvetson/4831155401
+- some-bucket/boxes.jpg: https://www.flickr.com/photos/sidelong/246816211
+- some-bucket/shed.jpg: https://www.flickr.com/photos/drainrat/14185588119

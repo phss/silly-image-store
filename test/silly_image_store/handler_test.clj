@@ -7,11 +7,11 @@
 (deftest test-app
   (testing "view image route"
     (testing "serve image"
-      (let [response (app (mock/request :get "/images/test-all-the-things.jpg"))
+      (let [response (app (mock/request :get "/images/tubes.jpg"))
             body (:body response)]
         (is (= (:status response) 200))  
         (is (= (class body) java.io.File))  
-        (is (= (.getPath body) "test/fixtures/test-all-the-things.jpg"))))
+        (is (= (.getPath body) "test/fixtures/tubes.jpg"))))
 
     (testing "image not-found"
       (let [response (app (mock/request :get "/images/not-such-image.png"))]
@@ -30,20 +30,20 @@
             json-body (json/read-str (:body response))]
         (is (= (:status response) 200))  
         (is (= json-body 
-               [{"name" "another-test.jpg",
-                 "url" "http://localhost/images/another-test.jpg"}
-                {"name" "test-all-the-things.jpg",
-                 "url" "http://localhost/images/test-all-the-things.jpg"}]))))
+               [{"name" "rocket.jpg",
+                 "url" "http://localhost/images/rocket.jpg"}
+                {"name" "tubes.jpg",
+                 "url" "http://localhost/images/tubes.jpg"}]))))
     
     (testing "images from bucket as json"
       (let [response (app (mock/request :get "/buckets/some-bucket/images"))
             json-body (json/read-str (:body response))]
         (is (= (:status response) 200))  
         (is (= json-body 
-               [{"name" "all-the-stuff.jpg",
-                 "url" "http://localhost/buckets/some-bucket/images/all-the-stuff.jpg"}
-                {"name" "stuff.jpg",
-                 "url" "http://localhost/buckets/some-bucket/images/stuff.jpg"}
+               [{"name" "boxes.jpg",
+                 "url" "http://localhost/buckets/some-bucket/images/boxes.jpg"}
+                {"name" "shed.jpg",
+                 "url" "http://localhost/buckets/some-bucket/images/shed.jpg"}
                 ]))))
     
     (testing "bucket not found"

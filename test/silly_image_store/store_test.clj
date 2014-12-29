@@ -7,14 +7,14 @@
 (deftest test-store
   (testing "loading a file"
     (testing "load existing file"
-      (let [file (load-image test-basedir "test-all-the-things.jpg")]
+      (let [file (load-image test-basedir "tubes.jpg")]
         (is (= (class file) java.io.File))  
-        (is (= (.getPath file) "test/fixtures/test-all-the-things.jpg"))))
+        (is (= (.getPath file) "test/fixtures/tubes.jpg"))))
 
     (testing "handle multiple dirs without trailing slash"
-      (let [file (load-image "test" "fixtures" "test-all-the-things.jpg")]
+      (let [file (load-image "test" "fixtures" "tubes.jpg")]
         (is (= (class file) java.io.File))  
-        (is (= (.getPath file) "test/fixtures/test-all-the-things.jpg"))))
+        (is (= (.getPath file) "test/fixtures/tubes.jpg"))))
 
     (testing "nil for inexistent image"
       (let [file (load-image "somewhere/" "doesnt-exist.png")]
@@ -22,12 +22,12 @@
 
   (testing "random image"
     (let [file-path (.getPath (random-image test-basedir))]
-      (is (some #{file-path} ["test/fixtures/test-all-the-things.jpg"
-                              "test/fixtures/another-test.jpg"]))))
+      (is (some #{file-path} ["test/fixtures/tubes.jpg"
+                              "test/fixtures/rocket.jpg"]))))
 
   (testing "listing images"
-    (is (= (list-images test-basedir) ["another-test.jpg" "test-all-the-things.jpg"]))
-    (is (= (list-images test-basedir "some-bucket") ["all-the-stuff.jpg" "stuff.jpg"]))
+    (is (= (list-images test-basedir) ["rocket.jpg" "tubes.jpg"]))
+    (is (= (list-images test-basedir "some-bucket") ["boxes.jpg" "shed.jpg"]))
     (is (= (list-images "no-such-place") nil)))
   
   (testing "listing image directories"
