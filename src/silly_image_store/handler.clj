@@ -10,11 +10,8 @@
 (def images-dir
   (env :base-store-dir))
 
-(defn- image-not-found [image]
-  (route/not-found (str "No image '" image "' found")))
-
-(defn- bucket-not-found [bucket]
-  (route/not-found (str "No bucket '" bucket "' found")))
+(defn- not-found [thing]
+  (route/not-found (str "No thing '" thing "' found")))
 
 (defn- request-url [{scheme :scheme, {host "host"} :headers, uri :uri}]
   (str (name scheme) "://" host uri))
@@ -25,15 +22,15 @@
         to-json (fn [n] {:name n :url (str base-image-url "/" n)})]
     (if image-names 
       (map to-json image-names)
-      (bucket-not-found bucket))))
+      (not-found bucket))))
 
 (defn- serve-image-route [{{image :image} :params}]
   (let [image-file (store/load-image images-dir image)]
-    (or image-file (image-not-found image))))
+    (or image-file (not-found image))))
 
 (defn- serve-random-image-route [request]
   (let [image-file (store/random-image images-dir)]
-    (or image-file (image-not-found "random"))))
+    (or image-file (not-found "random"))))
 
 
 (defroutes app-routes

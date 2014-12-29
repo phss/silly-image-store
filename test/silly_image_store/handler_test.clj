@@ -16,7 +16,7 @@
     (testing "image not-found"
       (let [response (app (mock/request :get "/images/not-such-image.png"))]
         (is (= (:status response) 404))   
-        (is (= (:body response) "No image 'not-such-image.png' found")))))
+        (is (= (:body response) "No thing 'not-such-image.png' found")))))
 
   (testing "serve random image"
     (let [response (app (mock/request :get "/random"))
@@ -49,7 +49,7 @@
     (testing "bucket not found"
       (let [response (app (mock/request :get "/buckets/no-such-bucket/images"))]
         (is (= (:status response) 404))   
-        (is (= (:body response) "No bucket 'no-such-bucket' found")))))
+        (is (= (:body response) "No thing 'no-such-bucket' found")))))
 
 
   (testing "generic not-found route"
