@@ -18,6 +18,14 @@
        (filter file?)
        (map filename)))))
 
+(defn list-image-dirs [& paths]
+  (let [image-directory (apply load-image paths)]
+    (if (exists? image-directory)
+      (->> image-directory
+       .listFiles
+       (filter (complement file?))
+       (map filename)))))
+
 (defn random-image [basedir]
   (let [random-image-name (rand-nth (list-images basedir))]
     (load-image basedir random-image-name)))
