@@ -10,9 +10,8 @@
 (def images-dir
   (env :base-store-dir))
 
-(defn- not-found [thing]
-  (route/not-found (str "No thing '" thing "' found")))
 
+; Request/Response utils
 (defn- request-url [{scheme :scheme, {host "host"} :headers, uri :uri}]
   (str (name scheme) "://" host uri))
 
@@ -20,6 +19,11 @@
   (let [base-url (request-url request)
         to-json (fn [n] {:name n :url (str base-url "/" n)})]
     (fn [names] (map to-json names))))
+
+
+; Routes
+(defn- not-found [thing]
+  (route/not-found (str "No thing '" thing "' found")) 
 
 (defn- list-images-route [request bucket]
   (let [json-list-response (json-list-response-builder request)
