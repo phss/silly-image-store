@@ -1,17 +1,18 @@
 (ns silly-image-store.store
   (:require [clojure.java.io :as io]))
 
+(def exists? #(and % (.exists %)))
 (def file? #(.isFile %))
 (def filename #(.getName %))
 
 (defn load-image [& paths]
   (let [file (apply io/file paths)]
-    (if (.exists file) file nil)))
+    (if (exists? file) file nil)))
 
 
 (defn list-images [& paths]
   (let [image-directory (apply load-image paths)]
-    (if image-directory
+    (if (exists? image-directory)
       (->> image-directory
        .listFiles
        (filter file?)
