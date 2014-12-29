@@ -51,6 +51,14 @@
         (is (= (:status response) 404))   
         (is (= (:body response) "No thing 'no-such-bucket' found")))))
 
+;  (testing "listing buckets"
+;    (let [response (app (mock/request :get "/buckets"))
+;          json-body (json/read-str (:body response))]
+;      (is (= (:status response) 200))
+;      (is (= json-body [{"name" "some-bucket",
+;                         "url" "http://localhost/buckets/some-bucket"}]))
+;      ))
+
 
   (testing "generic not-found route"
     (let [response (app (mock/request :get "/invalid"))]
