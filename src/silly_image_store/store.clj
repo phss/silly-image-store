@@ -9,22 +9,19 @@
   (let [file (apply io/file paths)]
     (if (exists? file) file)))
 
+(defn- filtered-file-names [filter-fn paths]
+  (let [image-directory (apply load-image paths)]
+    (if (exists? image-directory)
+      (->> image-directory
+       .listFiles
+       (filter filter-fn)
+       (map filename)))))
 
 (defn list-images [& paths]
-  (let [image-directory (apply load-image paths)]
-    (if (exists? image-directory)
-      (->> image-directory
-       .listFiles
-       (filter file?)
-       (map filename)))))
+  (filtered-file-names file? paths))
 
 (defn list-image-dirs [& paths]
-  (let [image-directory (apply load-image paths)]
-    (if (exists? image-directory)
-      (->> image-directory
-       .listFiles
-       (filter (complement file?))
-       (map filename)))))
+  (filtered-file-names (complement file?) paths))
 
 (defn random-image [basedir]
   (let [random-image-name (rand-nth (list-images basedir))]
