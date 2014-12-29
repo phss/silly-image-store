@@ -16,8 +16,8 @@
 (defn- base-url [{scheme :scheme, {host "host"} :headers}]
   (str (name scheme) "://" host))
 
-(defn- list-images-route [request]
-  (let [image-names (store/list-images images-dir)
+(defn- list-images-route [request bucket]
+  (let [image-names (store/list-images images-dir bucket)
         image-url (str (base-url request) "/images/")
         to-json (fn [n] {:name n :url (str image-url n)})]
     (map to-json image-names)))
@@ -30,18 +30,12 @@
   (let [image-file (store/random-image images-dir)]
     (or image-file (image-not-found "random"))))
 
-(defn- list-images-from-bucket-route [request bucket]
-  (let [image-names (store/list-images images-dir bucket)
-        image-url (str (base-url request) "/images/")
-        to-json (fn [n] {:name n :url (str image-url n)})]
-    (map to-json image-names)))
-
 
 (defroutes app-routes
-  (GET "/images" request list-images-route)
+  (GET "/images" request (list-images-route request ""))
   (GET "/images/:image" request serve-image-route)
   (GET "/random" request serve-random-image-route)
-  (GET "/buckets/:bucket/images" [bucket :as request] (list-images-from-bucket-route request bucket))
+  (GET "/buckets/:bucket/images" [bucket :as request] (list-images-route request bucket))
   (route/resources "/")
   (route/not-found "Not Found"))
 
