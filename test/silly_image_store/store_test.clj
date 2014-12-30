@@ -9,7 +9,7 @@
     (is (= (class file) java.io.File))  
     (is (= (.getPath file) path)))
 
-  (testing "loading a file"
+  (testing "loading an image"
     (is-file-with-path (load-image test-basedir "tubes.jpg") "test/fixtures/tubes.jpg")
     (is-file-with-path (load-image "test" "fixtures" "tubes.jpg")"test/fixtures/tubes.jpg")
     (is (nil? (load-image "somewhere" "doesnt-exist.png"))))
