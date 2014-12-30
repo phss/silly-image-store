@@ -5,20 +5,14 @@
 (def test-basedir "test/fixtures/")
 
 (deftest test-store
+  (defn is-file-with-path [file path]
+    (is (= (class file) java.io.File))  
+    (is (= (.getPath file) path)))
+
   (testing "loading a file"
-    (testing "load existing file"
-      (let [file (load-image test-basedir "tubes.jpg")]
-        (is (= (class file) java.io.File))  
-        (is (= (.getPath file) "test/fixtures/tubes.jpg"))))
-
-    (testing "handle multiple dirs without trailing slash"
-      (let [file (load-image "test" "fixtures" "tubes.jpg")]
-        (is (= (class file) java.io.File))  
-        (is (= (.getPath file) "test/fixtures/tubes.jpg"))))
-
-    (testing "nil for inexistent image"
-      (let [file (load-image "somewhere" "doesnt-exist.png")]
-        (is (nil? file)))))
+    (is-file-with-path (load-image test-basedir "tubes.jpg") "test/fixtures/tubes.jpg")
+    (is-file-with-path (load-image "test" "fixtures" "tubes.jpg")"test/fixtures/tubes.jpg")
+    (is (nil? (load-image "somewhere" "doesnt-exist.png"))))
 
   (testing "random image"
     (let [file-path (.getPath (random-image test-basedir))]
