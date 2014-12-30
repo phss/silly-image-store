@@ -3,6 +3,7 @@
 
 (def exists? #(and % (.exists %)))
 (def file? #(.isFile %))
+(def directory? #(.isDirectory %))
 (def filename #(.getName %))
 
 (defn load-image [& paths]
@@ -21,7 +22,7 @@
   (filtered-file-names file? paths))
 
 (defn list-image-dirs [& paths]
-  (filtered-file-names (complement file?) paths))
+  (filtered-file-names directory? paths))
 
 (defn random-image [& paths]
   (let [random-image-name (rand-nth (apply list-images paths))]

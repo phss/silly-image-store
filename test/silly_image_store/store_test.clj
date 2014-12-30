@@ -17,7 +17,7 @@
         (is (= (.getPath file) "test/fixtures/tubes.jpg"))))
 
     (testing "nil for inexistent image"
-      (let [file (load-image "somewhere/" "doesnt-exist.png")]
+      (let [file (load-image "somewhere" "doesnt-exist.png")]
         (is (nil? file)))))
 
   (testing "random image"
