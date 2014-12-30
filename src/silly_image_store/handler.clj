@@ -7,8 +7,8 @@
             [compojure.handler :as handler]
             [compojure.route :as route]))
 
-(def images-dir
-  (env :base-store-dir))
+(def images-dir (env :base-store-dir))
+(def no-bucket "")
 
 
 ; Request/Response utils
@@ -47,9 +47,9 @@
 
 
 (defroutes app-routes
-  (GET "/images" request (list-images-route request ""))
-  (GET "/images/:image" [image] (serve-image-route "" image))
-  (GET "/random" [] (serve-random-image-route ""))
+  (GET "/images" request (list-images-route request no-bucket))
+  (GET "/images/:image" [image] (serve-image-route no-bucket image))
+  (GET "/random" [] (serve-random-image-route no-bucket))
   (GET "/buckets" request list-buckets-route)
   (GET "/buckets/:bucket/images" [bucket :as request] (list-images-route request bucket))
   (GET "/buckets/:bucket/images/:image" [bucket image] (serve-image-route bucket image))
