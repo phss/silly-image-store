@@ -6,25 +6,25 @@
 (def directory? #(.isDirectory %))
 (def filename #(.getName %))
 
-(defn load-image [& paths]
-  (let [file (apply io/file paths)]
+(defn load-image [& path]
+  (let [file (apply io/file path)]
     (if (exists? file) file)))
 
-(defn- filtered-file-names [filter-fn paths]
-  (let [image-directory (apply load-image paths)]
+(defn- filtered-file-names [filter-fn path]
+  (let [image-directory (apply load-image path)]
     (if (exists? image-directory)
       (->> image-directory
        .listFiles
        (filter filter-fn)
        (map filename)))))
 
-(defn list-images [& paths]
-  (filtered-file-names file? paths))
+(defn list-images [& path]
+  (filtered-file-names file? path))
 
-(defn list-image-dirs [& paths]
-  (filtered-file-names directory? paths))
+(defn list-image-dirs [& path]
+  (filtered-file-names directory? path))
 
-(defn random-image [& paths]
-  (let [random-image-name (rand-nth (apply list-images paths))]
-    (apply load-image (concat paths [random-image-name]))))
+(defn random-image [& path]
+  (let [random-image-name (rand-nth (apply list-images path))]
+    (apply load-image (concat path [random-image-name]))))
 
