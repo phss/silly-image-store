@@ -15,14 +15,12 @@
     (is (nil? (load-image "somewhere" "doesnt-exist.png"))))
 
   (testing "random image"
-    (let [file-path (.getPath (random-image test-basedir))]
-      (is (some #{file-path} ["test/fixtures/tubes.jpg"
-                              "test/fixtures/rocket.jpg"]))))
-
-  (testing "random image form bucket"
-    (let [file-path (.getPath (random-image test-basedir "some-bucket"))]
-      (is (some #{file-path} ["test/fixtures/some-bucket/boxes.jpg"
-                              "test/fixtures/some-bucket/shed.jpg"]))))
+    (is (some #{(.getPath (random-image test-basedir))}
+              ["test/fixtures/tubes.jpg"
+               "test/fixtures/rocket.jpg"]))
+    (is (some #{(.getPath (random-image test-basedir "some-bucket"))}
+              ["test/fixtures/some-bucket/boxes.jpg"
+               "test/fixtures/some-bucket/shed.jpg"])) )
 
   (testing "listing images"
     (is (= (list-images test-basedir) ["rocket.jpg" "tubes.jpg"]))
