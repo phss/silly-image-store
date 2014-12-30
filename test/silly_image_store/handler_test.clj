@@ -35,6 +35,13 @@
           body (:body response)]
       (is (= (:status response) 200))  
       (is (= (class body) java.io.File))))
+
+  (testing "serve random image from bucket"
+    (let [response (app (mock/request :get "/buckets/some-bucket/random"))
+          body (:body response)]
+      (is (= (:status response) 200))  
+      (is (= (class body) java.io.File))))
+    
     
   (testing "listing images"
     (testing "images from base dir as json"

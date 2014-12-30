@@ -25,6 +25,11 @@
       (is (some #{file-path} ["test/fixtures/tubes.jpg"
                               "test/fixtures/rocket.jpg"]))))
 
+  (testing "random image form bucket"
+    (let [file-path (.getPath (random-image test-basedir "some-bucket"))]
+      (is (some #{file-path} ["test/fixtures/some-bucket/boxes.jpg"
+                              "test/fixtures/some-bucket/shed.jpg"]))))
+
   (testing "listing images"
     (is (= (list-images test-basedir) ["rocket.jpg" "tubes.jpg"]))
     (is (= (list-images test-basedir "some-bucket") ["boxes.jpg" "shed.jpg"]))

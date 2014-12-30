@@ -23,7 +23,7 @@
 (defn list-image-dirs [& paths]
   (filtered-file-names (complement file?) paths))
 
-(defn random-image [basedir]
-  (let [random-image-name (rand-nth (list-images basedir))]
-    (load-image basedir random-image-name)))
+(defn random-image [& paths]
+  (let [random-image-name (rand-nth (apply list-images paths))]
+    (apply load-image (concat paths [random-image-name]))))
 
