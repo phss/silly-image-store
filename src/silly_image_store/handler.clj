@@ -1,6 +1,7 @@
  (ns silly-image-store.handler
   (:require [silly-image-store.store :as store]
             [silly-image-store.logging :refer :all]
+            [silly-image-store.trailing-slash-middleware :refer :all]
             [environ.core :refer [env]]
             [compojure.core :refer :all]
             [ring.middleware.json :refer :all]
@@ -27,7 +28,7 @@
 
 (defn- root-route [request link-names]
   (let [base-url (request-url request)
-        links (map (fn [n] {n (str base-url (name n))}) link-names)]
+        links (map (fn [n] {n (str base-url "/" (name n))}) link-names)]
     {:body (into {} links)}))
 
 (defn- list-images-route [request bucket]
@@ -57,6 +58,7 @@
   (GET "/images/:image" [image] (serve-image-route no-bucket image))
   (GET "/random" [] (serve-random-image-route no-bucket))
   (GET "/buckets" request list-buckets-route)
+  (GET "/buckets/:bucket" [:as request] (root-route request [:images :random]))
   (GET "/buckets/:bucket/images" [bucket :as request] (list-images-route request bucket))
   (GET "/buckets/:bucket/images/:image" [bucket image] (serve-image-route bucket image))
   (GET "/buckets/:bucket/random" [bucket] (serve-random-image-route bucket))
@@ -65,6 +67,7 @@
 
 (def app
   (-> (handler/site app-routes)
+      (ignore-trailing-slash)
       (wrap-json-response)
       (wrap-request-logging)))
 
