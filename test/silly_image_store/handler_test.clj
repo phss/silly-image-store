@@ -12,12 +12,18 @@
         (is (= json-body {"images" "http://localhost/images",
                           "buckets" "http://localhost/buckets",
                           "random" "http://localhost/random"}))))
+
   (testing "bucket root route"
     (let [response (app (mock/request :get "/buckets/some-bucket"))
           json-body (json/read-str (:body response))]
         (is (= (:status response) 200))  
         (is (= json-body {"images" "http://localhost/buckets/some-bucket/images",
                           "random" "http://localhost/buckets/some-bucket/random"}))))
+
+  (testing "bucket not found"
+    (let [response (app (mock/request :get "/buckets/no-such-bucket"))]
+      (is (= (:status response) 404))   
+      (is (= (:body response) "No thing 'no-such-bucket' found")))) 
 
   (testing "view image route"
     (testing "serve image"

@@ -21,7 +21,6 @@
         to-json (fn [n] {:name n :url (str base-url "/" n)})]
     (fn [names] (map to-json names))))
 
-
 ; Routes
 (defn- not-found [thing]
   (route/not-found (str "No thing '" thing "' found")))
@@ -58,7 +57,10 @@
   (GET "/images/:image" [image] (serve-image-route no-bucket image))
   (GET "/random" [] (serve-random-image-route no-bucket))
   (GET "/buckets" request list-buckets-route)
-  (GET "/buckets/:bucket" [:as request] (root-route request "/" [:images :random]))
+  (GET "/buckets/:bucket" [bucket :as request]
+       (if (some #{bucket} (store/list-image-dirs images-dir))
+         (root-route request "/" [:images :random])
+         (not-found bucket)))
   (GET "/buckets/:bucket/images" [bucket :as request] (list-images-route request bucket))
   (GET "/buckets/:bucket/images/:image" [bucket image] (serve-image-route bucket image))
   (GET "/buckets/:bucket/random" [bucket] (serve-random-image-route bucket))
