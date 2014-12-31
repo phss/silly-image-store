@@ -11,7 +11,7 @@
         (is (= (:status response) 200))  
         (is (= json-body {"images" "http://localhost/images",
                           "buckets" "http://localhost/buckets",
-                          "random-image" "http://localhost/random"}))))
+                          "random" "http://localhost/random"}))))
 
   (testing "view image route"
     (testing "serve image"

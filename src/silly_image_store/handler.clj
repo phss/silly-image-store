@@ -29,7 +29,7 @@
   (let [base-url (request-url request)]
     {:body {:images (str base-url "images"),
             :buckets (str base-url "buckets"),
-            :random-image (str base-url "random")}}))
+            :random (str base-url "random")}}))
 
 (defn- list-images-route [request bucket]
   (let [json-list-response (json-list-response-builder request)
