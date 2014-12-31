@@ -23,9 +23,10 @@
                           "random" "http://localhost/buckets/some-bucket/random"}))))
 
   (testing "bucket not found"
-    (let [response (do-get "/buckets/no-such-bucket")]
-      (is (= (:status response) 404))   
-      (is (= (:body response) "No thing 'no-such-bucket' found")))) 
+    (let [is-not-found (fn [resp] (is (and (= (:status resp) 404)
+                                           (= (:body resp) "No thing 'no-such-bucket' found")))) ]
+      (is-not-found (do-get "/buckets/no-such-bucket"))
+      (is-not-found (do-get "/buckets/no-such-bucket/images"))))
 
   (testing "view image route"
     (testing "serve image"
@@ -86,11 +87,7 @@
                 {"name" "shed.jpg",
                  "url" "http://localhost/buckets/some-bucket/images/shed.jpg"}
                 ]))))
-    
-    (testing "bucket not found"
-      (let [response (do-get "/buckets/no-such-bucket/images")]
-        (is (= (:status response) 404))   
-        (is (= (:body response) "No thing 'no-such-bucket' found")))))
+    )
 
   (testing "listing buckets"
     (let [response (do-get "/buckets")
