@@ -5,6 +5,14 @@
             [ring.mock.request :as mock]))
 
 (deftest test-app
+  (testing "root route"
+    (let [response (app (mock/request :get "/"))
+          json-body (json/read-str (:body response))]
+        (is (= (:status response) 200))  
+        (is (= json-body {"images" "http://localhost/images",
+                          "buckets" "http://localhost/buckets",
+                          "random-image" "http://localhost/random"}))))
+
   (testing "view image route"
     (testing "serve image"
       (let [response (app (mock/request :get "/images/tubes.jpg"))

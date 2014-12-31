@@ -25,6 +25,12 @@
 (defn- not-found [thing]
   (route/not-found (str "No thing '" thing "' found")))
 
+(defn- root-route [request]
+  (let [base-url (request-url request)]
+    {:body {:images (str base-url "images"),
+            :buckets (str base-url "buckets"),
+            :random-image (str base-url "random")}}))
+
 (defn- list-images-route [request bucket]
   (let [json-list-response (json-list-response-builder request)
         image-names (store/list-images images-dir bucket)]
@@ -47,6 +53,7 @@
 
 
 (defroutes app-routes
+  (GET "/" request root-route)
   (GET "/images" request (list-images-route request no-bucket))
   (GET "/images/:image" [image] (serve-image-route no-bucket image))
   (GET "/random" [] (serve-random-image-route no-bucket))
