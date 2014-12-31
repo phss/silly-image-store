@@ -7,51 +7,53 @@
 (def do-get #(app (mock/request :get %)))
 
 (deftest test-app
-  (testing "root route"
-    (let [response (do-get "/")
-          json-body (json/read-str (:body response))]
-        (is (= (:status response) 200))  
-        (is (= json-body {"images" "http://localhost/images",
-                          "buckets" "http://localhost/buckets",
-                          "random" "http://localhost/random"}))))
+  (testing "root links"
+    (testing "from base"
+      (let [response (do-get "/")
+            json-body (json/read-str (:body response))]
+          (is (= (:status response) 200))  
+          (is (= json-body {"images" "http://localhost/images",
+                            "buckets" "http://localhost/buckets",
+                            "random" "http://localhost/random"}))))
 
-  (testing "bucket root route"
-    (let [response (do-get "/buckets/some-bucket")
-          json-body (json/read-str (:body response))]
-        (is (= (:status response) 200))  
-        (is (= json-body {"images" "http://localhost/buckets/some-bucket/images",
-                          "random" "http://localhost/buckets/some-bucket/random"}))))
+    (testing "from bucket"
+      (let [response (do-get "/buckets/some-bucket")
+            json-body (json/read-str (:body response))]
+          (is (= (:status response) 200))  
+          (is (= json-body {"images" "http://localhost/buckets/some-bucket/images",
+                            "random" "http://localhost/buckets/some-bucket/random"})))))
 
   (testing "view image route"
-    (testing "serve image"
+    (testing "from base"
       (let [response (do-get "/images/tubes.jpg")
             body (:body response)]
         (is (= (:status response) 200))  
         (is (= (class body) java.io.File))  
         (is (= (.getPath body) "test/fixtures/tubes.jpg"))))
 
-    (testing "serve image from bucket"
+    (testing "from bucket"
       (let [response (do-get "/buckets/some-bucket/images/boxes.jpg")
             body (:body response)]
         (is (= (:status response) 200))  
         (is (= (class body) java.io.File))  
         (is (= (.getPath body) "test/fixtures/some-bucket/boxes.jpg")))))
 
-  (testing "serve random image"
-    (let [response (do-get "/random")
-          body (:body response)]
-      (is (= (:status response) 200))  
-      (is (= (class body) java.io.File))))
+  (testing "random image"
+     (testing "from base"
+      (let [response (do-get "/random")
+            body (:body response)]
+        (is (= (:status response) 200))  
+        (is (= (class body) java.io.File))))
 
-  (testing "serve random image from bucket"
-    (let [response (do-get "/buckets/some-bucket/random")
-          body (:body response)]
-      (is (= (:status response) 200))  
-      (is (= (class body) java.io.File))))
+    (testing "from bucket"
+      (let [response (do-get "/buckets/some-bucket/random")
+            body (:body response)]
+        (is (= (:status response) 200))  
+        (is (= (class body) java.io.File)))))
     
     
   (testing "listing images"
-    (testing "images from base dir as json"
+    (testing "from base as json"
       (let [response (do-get "/images")
             json-body (json/read-str (:body response))]
         (is (= (:status response) 200))  
@@ -61,7 +63,7 @@
                 {"name" "tubes.jpg",
                  "url" "http://localhost/images/tubes.jpg"}]))))
     
-    (testing "images from bucket as json"
+    (testing "from bucket as json"
       (let [response (do-get "/buckets/some-bucket/images")
             json-body (json/read-str (:body response))]
         (is (= (:status response) 200))  
