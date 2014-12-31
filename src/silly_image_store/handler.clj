@@ -36,9 +36,7 @@
 (defn- list-images-route [request bucket]
   (let [json-list-response (json-list-response-builder request)
         image-names (store/list-images images-dir bucket)]
-    (if image-names 
-      (json-list-response image-names)
-      (not-found bucket))))
+    (json-list-response image-names)))
 
 (defn- serve-image-route [bucket image]
   (let [image-file (store/load-image images-dir bucket image)]
@@ -66,9 +64,12 @@
   (GET "/buckets" request list-buckets-route)
   (GET "/buckets/:bucket" [bucket :as request]
        (if-bucket-exist bucket (root-route request "/" [:images :random])))
-  (GET "/buckets/:bucket/images" [bucket :as request] (list-images-route request bucket))
-  (GET "/buckets/:bucket/images/:image" [bucket image] (serve-image-route bucket image))
-  (GET "/buckets/:bucket/random" [bucket] (serve-random-image-route bucket))
+  (GET "/buckets/:bucket/images" [bucket :as request] 
+       (if-bucket-exist bucket (list-images-route request bucket)))
+  (GET "/buckets/:bucket/images/:image" [bucket image] 
+       (if-bucket-exist bucket (serve-image-route bucket image)))
+  (GET "/buckets/:bucket/random" [bucket] 
+       (if-bucket-exist bucket (serve-random-image-route bucket)))
   (route/resources "/")
   (route/not-found "Not Found"))
 

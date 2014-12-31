@@ -26,7 +26,9 @@
     (let [is-not-found (fn [resp] (is (and (= (:status resp) 404)
                                            (= (:body resp) "No thing 'no-such-bucket' found")))) ]
       (is-not-found (do-get "/buckets/no-such-bucket"))
-      (is-not-found (do-get "/buckets/no-such-bucket/images"))))
+      (is-not-found (do-get "/buckets/no-such-bucket/images"))
+      (is-not-found (do-get "/buckets/no-such-bucket/images/whatever.jpg"))
+      (is-not-found (do-get "/buckets/no-such-bucket/random"))))
 
   (testing "view image route"
     (testing "serve image"
