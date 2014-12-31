@@ -16,7 +16,7 @@
 (defn- request-url [{scheme :scheme, {host "host"} :headers, uri :uri}]
   (str (name scheme) "://" host uri))
 
-(defn- json-list-response-builder [request]
+(defn- list-response-builder [request]
   (let [base-url (request-url request)
         to-json (fn [n] {:name n :url (str base-url "/" n)})]
     (fn [names] (map to-json names))))
@@ -36,9 +36,9 @@
     {:body (into {} links)}))
 
 (defn- list-images-route [request bucket]
-  (let [json-list-response (json-list-response-builder request)
+  (let [list-response (list-response-builder request)
         image-names (store/list-images images-dir bucket)]
-    (json-list-response image-names)))
+    (list-response image-names)))
 
 (defn- serve-image-route [bucket image]
   (let [image-file (store/load-image images-dir bucket image)]
@@ -49,9 +49,9 @@
     (or image-file (not-found "random"))))
 
 (defn- list-buckets-route [request]
-  (let [json-list-response (json-list-response-builder request)
+  (let [list-response (list-response-builder request)
         bucket-names (store/list-image-dirs images-dir)]
-    (json-list-response bucket-names)))
+    (list-response bucket-names)))
 
 (defroutes app-routes
   (GET "/" [:as request] (root-route request "" [:images :buckets :random]))
