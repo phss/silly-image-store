@@ -9,9 +9,9 @@
     (let [response (app (mock/request :get "/"))
           json-body (json/read-str (:body response))]
         (is (= (:status response) 200))  
-        (is (= json-body {"images" "http://localhost//images",
-                          "buckets" "http://localhost//buckets",
-                          "random" "http://localhost//random"}))))
+        (is (= json-body {"images" "http://localhost/images",
+                          "buckets" "http://localhost/buckets",
+                          "random" "http://localhost/random"}))))
   (testing "bucket root route"
     (let [response (app (mock/request :get "/buckets/some-bucket"))
           json-body (json/read-str (:body response))]
