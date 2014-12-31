@@ -21,12 +21,14 @@
         to-json (fn [n] {:name n :url (str base-url "/" n)})]
     (fn [names] (map to-json names))))
 
-(defn- bucket-exist? [bucket]
-  (some #{bucket} (store/list-image-dirs images-dir)))
-
 ; Routes
 (defn- not-found [thing]
   (route/not-found (str "No thing '" thing "' found")))
+
+(defmacro if-exist [bucket expression]
+  `(if (some #{~bucket} (store/list-image-dirs images-dir))
+     ~expression
+     (not-found ~bucket)))
 
 (defn- root-route [request sep link-names]
   (let [base-url (request-url request)
@@ -51,11 +53,6 @@
         bucket-names (store/list-image-dirs images-dir)]
     (json-list-response bucket-names)))
 
-(defmacro if-bucket-exist [bucket expression]
-  `(if (bucket-exist? ~bucket)
-     ~expression
-     (not-found ~bucket)))
-
 (defroutes app-routes
   (GET "/" [:as request] (root-route request "" [:images :buckets :random]))
   (GET "/images" request (list-images-route request no-bucket))
@@ -63,13 +60,13 @@
   (GET "/random" [] (serve-random-image-route no-bucket))
   (GET "/buckets" request list-buckets-route)
   (GET "/buckets/:bucket" [bucket :as request]
-       (if-bucket-exist bucket (root-route request "/" [:images :random])))
+       (if-exist bucket (root-route request "/" [:images :random])))
   (GET "/buckets/:bucket/images" [bucket :as request] 
-       (if-bucket-exist bucket (list-images-route request bucket)))
+       (if-exist bucket (list-images-route request bucket)))
   (GET "/buckets/:bucket/images/:image" [bucket image] 
-       (if-bucket-exist bucket (serve-image-route bucket image)))
+       (if-exist bucket (serve-image-route bucket image)))
   (GET "/buckets/:bucket/random" [bucket] 
-       (if-bucket-exist bucket (serve-random-image-route bucket)))
+       (if-exist bucket (serve-random-image-route bucket)))
   (route/resources "/")
   (route/not-found "Not Found"))
 
