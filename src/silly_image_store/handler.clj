@@ -53,6 +53,10 @@
         bucket-names (store/list-image-dirs images-dir)]
     (json-list-response bucket-names)))
 
+(defmacro if-bucket-exist [bucket expression]
+  `(if (bucket-exist? ~bucket)
+     ~expression
+     (not-found ~bucket)))
 
 (defroutes app-routes
   (GET "/" [:as request] (root-route request "" [:images :buckets :random]))
@@ -61,9 +65,7 @@
   (GET "/random" [] (serve-random-image-route no-bucket))
   (GET "/buckets" request list-buckets-route)
   (GET "/buckets/:bucket" [bucket :as request]
-       (if (bucket-exist? bucket)
-         (root-route request "/" [:images :random])
-         (not-found bucket)))
+       (if-bucket-exist bucket (root-route request "/" [:images :random])))
   (GET "/buckets/:bucket/images" [bucket :as request] (list-images-route request bucket))
   (GET "/buckets/:bucket/images/:image" [bucket image] (serve-image-route bucket image))
   (GET "/buckets/:bucket/random" [bucket] (serve-random-image-route bucket))
