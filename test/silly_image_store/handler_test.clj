@@ -22,14 +22,6 @@
         (is (= json-body {"images" "http://localhost/buckets/some-bucket/images",
                           "random" "http://localhost/buckets/some-bucket/random"}))))
 
-  (testing "bucket not found"
-    (let [is-not-found (fn [resp] (is (and (= (:status resp) 404)
-                                           (= (:body resp) "No thing 'no-such-bucket' found")))) ]
-      (is-not-found (do-get "/buckets/no-such-bucket"))
-      (is-not-found (do-get "/buckets/no-such-bucket/images"))
-      (is-not-found (do-get "/buckets/no-such-bucket/images/whatever.jpg"))
-      (is-not-found (do-get "/buckets/no-such-bucket/random"))))
-
   (testing "view image route"
     (testing "serve image"
       (let [response (do-get "/images/tubes.jpg")
@@ -43,17 +35,7 @@
             body (:body response)]
         (is (= (:status response) 200))  
         (is (= (class body) java.io.File))  
-        (is (= (.getPath body) "test/fixtures/some-bucket/boxes.jpg"))))
-
-    (testing "image not-found"
-      (let [response (do-get "/images/not-such-image.png")]
-        (is (= (:status response) 404))   
-        (is (= (:body response) "No thing 'not-such-image.png' found"))))
-    
-    (testing "bucket image not-found"
-      (let [response (do-get "/buckets/some-bucket/images/not-such-image.png")]
-        (is (= (:status response) 404))   
-        (is (= (:body response) "No thing 'not-such-image.png' found")))))
+        (is (= (.getPath body) "test/fixtures/some-bucket/boxes.jpg")))))
 
   (testing "serve random image"
     (let [response (do-get "/random")
@@ -98,6 +80,19 @@
       (is (= json-body [{"name" "some-bucket",
                          "url" "http://localhost/buckets/some-bucket"}]))))
 
+  (testing "image not found"
+    (let [is-not-found (fn [resp] (is (and (= (:status resp) 404)
+                                           (= (:body resp) "No thing 'no-such-image.jpg' found")))) ]
+      (is-not-found (do-get "/images/no-such-image.jpg"))
+      (is-not-found (do-get "/buckets/some-bucket/images/no-such-image.jpg"))))
+
+  (testing "bucket not found"
+    (let [is-not-found (fn [resp] (is (and (= (:status resp) 404)
+                                           (= (:body resp) "No thing 'no-such-bucket' found")))) ]
+      (is-not-found (do-get "/buckets/no-such-bucket"))
+      (is-not-found (do-get "/buckets/no-such-bucket/images"))
+      (is-not-found (do-get "/buckets/no-such-bucket/images/whatever.jpg"))
+      (is-not-found (do-get "/buckets/no-such-bucket/random"))))
 
   (testing "generic not-found route"
     (let [response (do-get "/invalid")]
