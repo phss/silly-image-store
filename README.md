@@ -8,5 +8,5 @@ Image store written in Clojure. It allows:
 * ???
 * Profit
 
-It is silly!
+Serving images from a Java application is probably not the most efficient way of doing it. So don't use this for a production application. :)
 
